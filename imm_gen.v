@@ -1,9 +1,9 @@
-module imm_gen(clk, imm_in, imm_out);
+module imm_gen(clk, in, out);
 	input clk;
-	input [31:0] imm_in;
-	output reg [31:0] imm_out;
+	input [31:0] in;
+	output reg [31:0] out;
 	
 	always@(posedge clk) begin
-		imm_out = imm_in
+		out = in;
 	end
 endmodule

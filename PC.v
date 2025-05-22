@@ -1,13 +1,13 @@
-module PC(clk, pc_in, pc_out);
+module PC(clk, in, out);
 	input clk;
-	input [7:0] pc_in;
-	output reg [7:0] pc_out;
+	input [31:0] in;
+	output reg [31:0] out;
 	
 	initial begin
-		pc_out = 0;
+		out = 0;
 	end
 	
 	always@(posedge clk) begin
-		pc_out = pc_in;
+		out = in;
 	end
 endmodule
