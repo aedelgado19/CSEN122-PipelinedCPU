@@ -41,3 +41,18 @@ module data_mem(clk, r, w, addr, data_in, data_out); //size 65536x32
         if (r) data_out <= mem[a];
     end
 endmodule
+
+module PC(clk, in, out);
+	input clk;
+	input [31:0] in;
+	output reg [31:0] out;
+	
+	initial begin
+		out = 0;
+	end
+	
+	always@(posedge clk) begin
+		out = in;
+	end
+endmodule
+
