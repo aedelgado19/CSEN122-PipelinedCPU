@@ -1,4 +1,4 @@
-module mux(a, b, sel, out);
+module mux2to1(a, b, sel, out);
 	input a, b, sel;
 	output reg out;
 
@@ -9,3 +9,18 @@ module mux(a, b, sel, out);
 	end
 endmodule
 
+module mux3to1(a, b, c, sel, out);
+	input a, b, c;
+	input [1:0] sel;
+	output reg out;
+
+	always@(*) begin
+		case (sel)
+			2'b00: out = a;
+			2'b01: out = b;
+			2'b10: out = c;
+			default: out = 1'b0;
+		endcase
+	end
+
+endmodule
