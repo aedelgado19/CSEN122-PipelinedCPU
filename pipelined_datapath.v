@@ -1,62 +1,99 @@
+//when we say like ifid_blah, that means the blah LEAVES the ifid buffer (not enters)
+
 module pipelined_datapath(input clk);
-	reg clk;
 	
-//*** Stage 1 (IF stage) wires and regs ***
+//===================== Stage 1 (IF stage) wires and regs =====================
+	
+	//remember to instantiate the mux that has 3 inputs: PC+1, jump, and rs (from ALU), and outputs pc_in !!!!!!!!!!!!!!
+	//PC Sel is created in EXMEM stage
+
 	// pc
 	wire [31:0] pc_in, pc_out; //PC output
-	// pc_alu_adder
-	wire [31:0] pc_alu_adder_out;
-	// inst_mem
-	wire [31:0] inst_out; //inst_mem output
 	
-	// IF/ID buffer
+	// pc_adder inputs are the PC_out, 1, and outputs pc_plus1
+	wire [31:0] pc_plus1;
+
+
+	// inst_mem takes in PC_out amd outputs inst_out
+	wire [31:0] inst_out;
+	
+	// IF/ID buffer takes in PC, and inst out, and outputs ifid_pc and ifid_inst
 	reg [31:0] ifid_pc, ifid_inst;	
 	
+
 	
-//*** Stage 2 (ID stage) wires and regs ***
+	
+//===================== Stage 2 (ID stage) wires and regs =====================
  	// reg file
-	wire [5:0] rd_in, rs_in, rt_in;
-	wire [31:0] data_in;
+	wire [5:0] rd_in, rs_in, rt_in; //rd_in comes from writeback out of the MEM/WB buffer
+	wire [31:0] write_data, regW; //write data is the data to write, regW comes from rightmost mux in MEM/WB stage
 	wire [31:0] rs_out, rt_out;
+
 	// imm gen
 	wire [31:0] imm_out;
+
  	// control unit
-	wire RegWrite, MemRead, MemWrite, ALUSrc, MemToReg;
-	wire [1:0] PCSel;
-	wire Zflag, Nflag, add, inc, neg, sub;  //Don't thinnk we need Z and N flag in control unit?
+	//CTRL unit is an 8 bit bus where bit 0 = RegWrite, 1 = MemRead, 2 = MemWrite, 3 = MemToReg, 4 = PCtoReg, 5 = BrZ, 6 = BrN, 7= jmp_mem, 8 = INC
+	wire [8:0] ctrl;
+	wire [2:0] ALUOp; //add is 000, negate is 110, sub is 101, nop is 010, pass A is 111
 
-	// ID/EX buffer
-	reg [31:0] idex_pc, idex_rs, idex_rt, idex_imm;
+	// ID/EX buffer inputs
+	// (already made) rs_out, rt_out, imm_out, rd, ctrl, ifid_pc
+
+	// ID/EX buffer outputs
+	reg [31:0] idex_rs, idex_rt, idex_imm, idex_pc;
 	reg [5:0] idex_rd;
-	reg idex_RegWrite, idex_MemRead, idex_MemWrite, idex_ALUsrc, idex_MemToReg;
-	reg [1:0] idex_PCSel;
-	reg idex_add, idex_inc, idex_neg, idex_sub;
+	reg [8:0] idex_ctrl;
+	reg [2:0] idex_ALU_OP
 
 	
-//*** Stage 3 (EX stage) wires and regs ***
-	// ex_alu_adder
-	wire [31:0] ex_alu_adder_in, ex_alu_adder_out, pc_branch;
+//===================== Stage 3 (EX stage) wires and regs =====================
+	// ex_alu_adder takes in: idex_rs, imm_mux_choice, idex_ALU_OP, and outputs Z, N, and 32bit ALU_result
+	wire [31:0] imm_mux_choice, ALU_result, pc_branch; //imm_mux_choice is the result of the mux that chooses imm or rt
 	
-	// EX/MEM buffer
-	reg [31:0] exmem_alu_out, exmem_rt;
+
+	//dont forget to instantiate the imm_mux
+	
+	// EX/MEM buffer takes Zflag, Nflag, ALU_result, idex_rt, PC + imm, idex_rd, and idex_ctrl except ALU_OP is dc
+	wire Zflag, Nflag;
+	wire [31:0] PC_plus_imm;
+
+
+	//EXMEM outputs
+	reg [31:0] exmem_alu_result, exmem_rt, pc_plus_imm;
 	reg [5:0] exmem_rd;
-	reg exmem_RegWrite, exmem_MemRead, exmem_MemWrite, exmem_ALUsrc, exmem_MemToReg;
+	reg [8:0] exmem_ctrl;
 
+
+//===================== Stage 4 (MEM stage) wires and regs =====================
+	// data_mem takes in idex_rt, ALU_result, exmem_ctrl[1] for MemR and exmem_ctrl[2] for MemW
+	wire data_mem_out;
+
+	//intermediate stuff
+	//instantiate the OR gate to choose between Z and N, and one more OR to choose between BrZ and BrN. 
+		//Then the results of these go to an AND, and the output of the AND is the select line for the PC mux
 	
-//*** Stage 4 (MEM stage) wires and regs ***
-	// data_mem
-	wire data_out;
-	
-	// MEM/WB buffer
-	reg [31:0] memwb_data_out, memwb_alu_out;
+	// MEM/WB buffer inputs are exmem_ALU_result, data_mem_out, and exmem_ctrl
+
+	//MEM/WB buffer outputs are RegW from memwb_ctrl[0], PCtoReg from memwb_ctrl[4], PC, memwb_alu_result, memwb_data_mem_out (as jmp signal), memwb_rd;
+	reg memwb_regW; //set this to exmem_ctrl[0]
+	reg memwb_pc2R; //set this to exmem_ctrl[4]
+	reg memwb_mem2r; //this comes out of the mux that selects between PC and register
 	reg [5:0] memwb_rd;
-	reg memwb_RegWrite, memwb_MemToReg;
 
-	
-//*** Stage 5 (WB stage) wires and regs ***
+	reg [31:0] memwb_data_out; //this is the jmp signal 
+	reg [31:0] memwb_alu_result; 
+
+//===================== Stage 5 (WB stage) wires and regs =====================
 	wire [31:0] wb_data;
 	
 	
+
+
+
+//EVERYTHTING BELOW THIS ISNT CHECKED YETTTTTTT !!!!!!!!!!!!!!!1
+
+
 //Double check the instatiation of the parameters below
 // Instatiate stage 1 (IF stage) modules
 	MUX pc_mux(
