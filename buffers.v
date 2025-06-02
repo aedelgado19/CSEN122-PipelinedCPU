@@ -8,17 +8,18 @@ module ifid_buf(clk, instr_in, pc_in, instr_out, pc_out);
     end
 endmodule
 
-module idex_buf(clk, pc_in, rs_in, rt_in, rd_in, rs_out, rt_out, rd_out, pc_out);
+module idex_buf(clk, pc_in, rs_in, rt_in, rd_in, rs_out, rt_out, rd_out, pc_out, imm_in, imm_out);
     input clk;
-    input [31:0] pc_in, rs_in, rt_in;
+    input [31:0] pc_in, rs_in, rt_in, imm_in;
     input [5:0] rd_in;
-    output reg [31:0] pc_out, rs_out, rt_out;
+    output reg [31:0] pc_out, rs_out, rt_out, imm_out;
     output reg [5:0] rd_out;
     always @(posedge clk) begin
         pc_out <= pc_in;
         rs_out <= rs_in;
         rt_out <= rt_in;
         rd_out <= rd_in;
+	imm_out <= imm_in;
     end
 endmodule
 
