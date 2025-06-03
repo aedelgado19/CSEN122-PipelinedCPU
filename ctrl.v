@@ -1,11 +1,24 @@
 //this is new - it's the PC logic to control the PC selection and also the ctrl signals
 
-module ControlUnit(opcode, RegWrite, MemRead, MemWrite, ALUSrc, MemToReg, PCSel, Zflag, Nflag, add, inc, neg, sub);
-    input [3:0] opcode;
-    output reg RegWrite, MemRead, MemWrite, ALUSrc, MemToReg;
-    output reg [1:0] PCSel;
-    output reg Zflag, Nflag, add, inc, neg, sub;
+module ControlUnit(ctrl_in, ctrl_out);
+	/* control unit is an 11 bit bus where bit
+	15:12 = opcode, 
+	11:9 = ALUOp (add is 000, negate is 110, sub is 101, nop is 010, pass A is 111)
+	8 = MemRead, 
+	7 = MemWrite, 
+	6 = RegWrite, 
+	5 = MemToReg, 
+	4 = PCtoReg, 
+	3 = BrZ, 
+	2 = BrN, 
+	1 = jump, 
+	0 = jump_mem, 
+	*/
 
+    input [10:0] ctrl_in;
+    output reg [10:0] ctrl_out;
+    
+    //!!!!!!!!!!!!!stuff below must change to match stuff above
     always @(*) begin
 
 	//init all to 0
@@ -73,6 +86,7 @@ module ControlUnit(opcode, RegWrite, MemRead, MemWrite, ALUSrc, MemToReg, PCSel,
     end
 endmodule
 
+//I didn't use this TT because I just went with the "instantiate each component" route and I haven't figured out how to place this module in since it's tricky to figure out which stage of the variable goes in. Will come back to it when it's not so late.
 module PCLogic(PCSel, Z, N, Zflag, Nflag, PC1, rs, jmp_place, PC_next);
     input [1:0] PCSel;
     input Z, N;
