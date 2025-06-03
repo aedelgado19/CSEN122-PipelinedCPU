@@ -9,9 +9,9 @@ module mux2to1(a, b, sel, out);
 	end
 endmodule
 
-module mux3to1(a, b, c, sel, out);
+module mux3to1(a, b, c, sel1, sel2, out);
 	input a, b, c;
-	input [1:0] sel;
+	input sel1, sel2;
 	output reg out;
 
 	always@(*) begin
