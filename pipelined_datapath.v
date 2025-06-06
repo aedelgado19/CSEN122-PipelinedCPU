@@ -65,7 +65,8 @@ module pipelined_datapath(input clk);
 	wire [31:0] imm_out;
 
  	// control unit, check ctrl.v for indices
-	wire [15:0] ctrl_in, ctrl_out;
+ 	wire [3:0] opcode;
+	wire [11:0] ctrl_out; // updated width for control signals
 
 
 	// ID/EX buffer inputs
@@ -82,6 +83,7 @@ module pipelined_datapath(input clk);
 	assign rs_in = ifid_instr[21:16];
 	assign rt_in = ifid_instr[15:10];
 	assign rd_in = memwb_rd;
+	assign opcode = ifid_instr[15:12]; // Extract opcode from instruction
 	assign regW = memwb_ctrl[6];  //memwb_ctrl created at stage 5 of this program
 	assign write_data = wb_data;  //wb_data created at stage 5 of this program
 
@@ -98,7 +100,7 @@ module pipelined_datapath(input clk);
 	);
 	
 	ControlUnit ctrl_unit(
-		.ctrl_in(ctrl_in),
+		.opcode(opcode),
 		.ctrl_out(ctrl_out)
 	);	
 
@@ -155,7 +157,7 @@ module pipelined_datapath(input clk);
 		.out(pc_plus_imm), .Z(), .N()
 	);
 	
-	//Use this one? (check for another version jsut below)
+	//Use this one? Option B (check for another version jsut below)
 	exmem_buf exmem(
 		.clk(clk),
 		.Z_in(Zflag).
@@ -175,7 +177,7 @@ module pipelined_datapath(input clk);
 		.ctrl_out(exmem_ctrl)
 	);
 	
-	//or this one?
+	//or this one? Option B
 	exmem_buf exmem2(
 		.clk(clk),
 		.Z_in(Zflag).
@@ -233,13 +235,6 @@ module pipelined_datapath(input clk);
 	wire pc_sel;
 	
 	// MEM/WB buffer inputs are exmem_ALU_result, data_mem_out, and exmem_ctrl
-
-	/*
-	DIDNT USE:
-	//MEM/WB buffer outputs are RegW from memwb_ctrl[0], PCtoReg from memwb_ctrl[4], PC, memwb_alu_result, memwb_data_mem_out (as jmp signal), memwb_rd;
-	wire memwb_regW; //set this to exmem_ctrl[0]
-	wire memwb_pc2R; //set this to exmem_ctrl[4]
-	wire memwb_mem2r; //this comes out of the mux that selects between PC and register*/
 	wire [5:0] memwb_rd;
 
 	wire [31:0] memwb_data_out; //this is the jmp signal 
@@ -261,7 +256,7 @@ module pipelined_datapath(input clk);
 
 	assign pc_sel = or_alu_flags_out && or_branch_signals_out;
 	
-	//Two versions again with different ways to call ctrl
+	//Option 1: Two versions again with different ways to call ctrl
 	memwb_buf memwb(
 		.clk(clk),
 		.data_in(mem_data_out),
@@ -275,7 +270,7 @@ module pipelined_datapath(input clk);
 		.ctrl_out(memwb_ctrl[6:0])
 	);
 	
-	//version 2
+	//Option 2
 	memwb_buf memwb2(
 		.clk(clk),
 		.data_in(mem_data_out),
