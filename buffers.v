@@ -12,10 +12,10 @@ module idex_buf(clk, pc_in, rs_in, rt_in, imm_in, rd_in, ctrl_in, rs_out, rt_out
     input clk;
     input [31:0] pc_in, rs_in, rt_in, imm_in;
     input [5:0] rd_in;
-    input [8:0] ctrl_in;
+    input [11:0] ctrl_in;
     output reg [31:0] pc_out, rs_out, rt_out, imm_out;
     output reg [5:0] rd_out;
-    output reg [8:0] ctrl_out;
+    output reg [11:0] ctrl_out;
     always @(posedge clk) begin
         pc_out <= pc_in;
         rs_out <= rs_in;
