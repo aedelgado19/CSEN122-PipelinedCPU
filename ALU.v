@@ -55,6 +55,7 @@ module negate(A, out);
     assign out = ~A + 1'b1;
 endmodule
 
+
 module ALU(A, B, add, inc, neg, sub, out, Z, N);
     input [31:0] A, B;
     input add, inc, neg, sub;
