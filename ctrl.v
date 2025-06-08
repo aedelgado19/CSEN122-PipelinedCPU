@@ -1,5 +1,3 @@
-//this is new - it's the PC logic to control the PC selection and also the ctrl signals
-
 /* This Control Unit is a 16 bit bus where bit
 	15:12 = opcode, 
 	11:9 = ALUOp (add is 000, negate is 110, sub is 101, nop is 010, pass A is 111)
