@@ -157,27 +157,6 @@ module pipelined_datapath(input clk);
 		.out(pc_plus_imm), .Z(), .N()
 	);
 	
-	//Use this one? Option B (check for another version jsut below)
-	exmem_buf exmem(
-		.clk(clk),
-		.Z_in(Zflag).
-		.N_in(Nflag),
-		.alu_result_in(alu_result),
-		.rt_in(idex_rt),
-		.rd_in(idex_rd),
-		.pc_plus_imm_in(pc_plus_imm),
-		.ctrl_in(idex_ctrl[11:0],
-		
-		.Z_out(Zflag),
-		.N_out(Nflag),
-		.alu_result_out(exmem_alu_result),
-		.rt_out(exmem_rt),
-		.rd_out(exmem_rd),
-		.pc_plus_imm_out(exmem_pc_plus_imm)
-		.ctrl_out(exmem_ctrl)
-	);
-	
-	//or this one? Option B
 	exmem_buf exmem2(
 		.clk(clk),
 		.Z_in(Zflag).
@@ -256,21 +235,6 @@ module pipelined_datapath(input clk);
 
 	assign pc_sel = or_alu_flags_out && or_branch_signals_out;
 	
-	//Option 1: Two versions again with different ways to call ctrl
-	memwb_buf memwb(
-		.clk(clk),
-		.data_in(mem_data_out),
-		.alu_result_in(exmem_alu_result),
-		.rd_in(exmem_rd),
-		.ctrl_in(exmem_ctrl[6:0]),
-		
-		.data_out(memwb_data_out),
-		.alu_result_out(memwb_alu_result),
-		.rd_out(memwb_rd)
-		.ctrl_out(memwb_ctrl[6:0])
-	);
-	
-	//Option 2
 	memwb_buf memwb2(
 		.clk(clk),
 		.data_in(mem_data_out),
