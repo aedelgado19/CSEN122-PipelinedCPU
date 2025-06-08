@@ -8,7 +8,7 @@ module ifid_buf(clk, instr_in, pc_in, instr_out, pc_out);
     end
 endmodule
 
-module idex_buf(clk, pc_in, rs_in, rt_in, imm_in, rd_in, ctrl_in, rs_out, rt_out, rd_out, pc_out, imm_out, ctrl_out);)
+module idex_buf(clk, pc_in, rs_in, rt_in, imm_in, rd_in, ctrl_in, rs_out, rt_out, rd_out, pc_out, imm_out, ctrl_out);
     input clk;
     input [31:0] pc_in, rs_in, rt_in, imm_in;
     input [5:0] rd_in;
