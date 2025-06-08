@@ -6,8 +6,11 @@ module pipelined_datapath(input clk);
 	wire [5:0] memwb_rd;
 	wire [31:0] wb_data;
 	wire [6:0] memwb_ctrl;
+	wire [1:0] pc_sel;
+	wire exmem_jump, exmem_jump_mem;
 //===================== Stage 1 (IF stage) =====================
-	//PC Sel is created in EXMEM stage
+	wire sel1 = exmem_jump;
+	wire sel2 = memwb_ctrl[0];
 
 	// pc
 	wire [31:0] pc_in, pc_out; //PC output
@@ -25,17 +28,19 @@ module pipelined_datapath(input clk);
 // Instatiate stage 1 (IF stage) modules
 	mux3to1 pc_mux(
 		.a(pc_plus1), 
-		.b(alu_result),
-		.c(mem_data_out),
-		.sel1(pc_sel),  	//pc_sel from mem stage (stage 4), the or and and gates
-		.sel2(memwb_ctrl[0]),	//jump_mem control signal
+		.b(exmem_alu_result),
+		.c(memwb_data_out),
+		.sel1(sel1),  	//pc_sel from mem stage (stage 4), the or and and gates
+		.sel2(sel2),	//jump_mem control signal
 		.out(pc_in)
 	);
+
 	PC program_counter(
 		.clk(clk), 
 		.in(pc_in), 
 		.out(pc_out)
 	);
+
 	inst_mem inst_mem(
 		.clk(clk), 
 		.addr(pc_out), 
@@ -126,7 +131,7 @@ module pipelined_datapath(input clk);
 	
 //===================== Stage 3 (EX stage) wires and regs =====================
 	// ex_alu takes in: idex_rs, imm_mux_choice, idex_ALU_OP, and outputs Z, N, and 32bit ALU_result
-	wire [31:0] imm_mux_choice, alu_result, pc_branch; //imm_mux_choice is the result of the mux that chooses imm or rt
+	wire [31:0] imm_mux_choice; //imm_mux_choice is the result of the mux that chooses imm or rt
 	
 	//ALUOp
 	wire ex_add, ex_inc, ex_neg, ex_sub;
@@ -134,6 +139,8 @@ module pipelined_datapath(input clk);
 
 	//select between imm or rt mux (0 = rt and 1 = imm)
 	wire ALUsrc;
+	assign ALUsrc = (idex_ctrl[8] || idex_ctrl[7]);  // ALUsrc = 1 if MemRead or MemWrite
+
 	
 	// EX/MEM buffer takes Zflag, Nflag, alu_result, idex_rt, PC + imm, idex_rd, and idex_ctrl except ALU_OP is dc
 	wire Zflag, Nflag;
@@ -151,7 +158,8 @@ module pipelined_datapath(input clk);
 	wire [2:0] exmem_aluOp;
 	wire exmem_memRead, exmem_memWrite, exmem_regWrite;
 	wire exmem_memToReg, exmem_pcToReg, exmem_brZ, exmem_brN;
-	wire exmem_jump, exmem_jump_mem;
+
+	wire exmem_Z, exmem_N;
 
 
 
@@ -201,8 +209,8 @@ module pipelined_datapath(input clk);
 	    .jump_mem_in(idex_ctrl[0]),
 
 	    //outputs
-	    .Z_out(Zflag),
-	    .N_out(Nflag),
+	    .Z_out(exmem_Z),
+	    .N_out(exmem_N),
 	    .alu_result_out(exmem_alu_result),
 	    .rt_out(exmem_rt),
 	    .rd_out(exmem_rd),
@@ -244,14 +252,14 @@ module pipelined_datapath(input clk);
 // Instantiate stage 4 (MEM stage) modules
 	data_mem data_mem(
 		.clk(clk), 
-		.r(exmem_ctrl[7]),  //MemRead
-		.w(exmem_ctrl[6]),  //MemWrite
+		.r(exmem_memRead), 
+		.w(exmem_memWrite), 
 		.addr(exmem_alu_result), 
 		.data_in(exmem_rt), 
 		.data_out(mem_data_out)
 	);
 	
-	assign or_alu_flags_out = Zflag || Nflag;
+	assign or_alu_flags_out = exmem_Z || exmem_N;
 	
 	assign or_branch_signals_out = exmem_ctrl[3] || exmem_ctrl[2];
 
