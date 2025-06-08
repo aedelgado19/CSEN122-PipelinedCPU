@@ -26,45 +26,6 @@ module idex_buf(clk, pc_in, rs_in, rt_in, imm_in, rd_in, ctrl_in, rs_out, rt_out
     end
 endmodule
 
-//Option A
-module exmem_buf(
-    input clk,
-
-    // Data inputs
-    input Z_in,
-    input N_in,
-    input [31:0] alu_result_in,
-    input [31:0] rt_in,
-    input [5:0] rd_in,
-    input [31:0] pc_plus_imm_in,
-    input [11:0] ctrl_in,  // Combined control signals
-
-    // Data outputs
-    output reg Z_out,
-    output reg N_out,
-    output reg [31:0] alu_result_out,
-    output reg [31:0] rt_out,
-    output reg [5:0] rd_out,
-    output reg [31:0] pc_plus_imm_out,
-    output reg [11:0] ctrl_out  // Combined control signals
-);
-
-    always @(posedge clk) begin
-        // Pass through flags and data
-        Z_out <= Z_in;
-        N_out <= N_in;
-        alu_result_out <= alu_result_in;
-        rt_out <= rt_in;
-        rd_out <= rd_in;
-        pc_plus_imm_out <= pc_plus_imm_in;
-
-        // Pass through control bus
-        ctrl_out <= ctrl_in;
-    end
-
-endmodule
-
-//Option B
 module exmem_buf(
     input clk,
     // Data inputs
@@ -128,31 +89,6 @@ module exmem_buf(
 
 endmodule
 
-
-//Option 1
-module memwb_buf(
-    input clk,
-    input [31:0] data_in,
-    input [31:0] alu_result_in,
-    input [5:0] rd_in,
-    input [6:0] ctrl_in,
-
-    output reg [31:0] data_out,
-    output reg [31:0] alu_result_out,
-    output reg [5:0] rd_out,
-    output reg [6:0] ctrl_out
-);
-
-    always @(posedge clk) begin
-        data_out <= data_in;
-        alu_result_out <= alu_result_in;
-        rd_out <= rd_in;
-        ctrl_out <= ctrl_in;
-    end
-
-endmodule
-
-//Option 2
 module memwb_buf(
     input clk,
     input [31:0] data_in,
