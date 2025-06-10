@@ -1,0 +1,15 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  \
+"Z:/ECC/Desktop/curr/alu.v" \
+"Z:/ECC/Desktop/curr/buffers.v" \
+"Z:/ECC/Desktop/curr/ctrl.v" \
+"Z:/ECC/Desktop/curr/datapath_modules.v" \
+"Z:/ECC/Desktop/curr/muxes.v" \
+"Z:/ECC/Desktop/curr/pipelined_datapath.v" \
+"Z:/ECC/Desktop/curr/tb.v" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

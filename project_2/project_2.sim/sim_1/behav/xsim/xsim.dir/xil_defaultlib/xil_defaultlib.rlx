@@ -1,0 +1,12 @@
+0.7
+2020.2
+Apr 18 2022
+16:05:34
+C:/Users/ygoh2/CSEN122L/project_2/project_2.sim/sim_1/behav/xsim/glbl.v,1649976174,verilog,,,,glbl,,,,,,,,
+Z:/ECC/Desktop/curr/alu.v,1749590811,verilog,,Z:/ECC/Desktop/curr/buffers.v,,ALU;pc_imm_adder;pc_p1,,,,,,,,
+Z:/ECC/Desktop/curr/buffers.v,1749572208,verilog,,Z:/ECC/Desktop/curr/ctrl.v,,exmem_buf;idex_buf;ifid_buf;memwb_buf,,,,,,,,
+Z:/ECC/Desktop/curr/ctrl.v,1749495133,verilog,,Z:/ECC/Desktop/curr/datapath_modules.v,,ControlUnit,,,,,,,,
+Z:/ECC/Desktop/curr/datapath_modules.v,1749590413,verilog,,Z:/ECC/Desktop/curr/muxes.v,,PC;data_mem;imm_gen;imm_gen2;inst_mem;reg_file,,,,,,,,
+Z:/ECC/Desktop/curr/muxes.v,1749459580,verilog,,Z:/ECC/Desktop/curr/pipelined_datapath.v,,mux2to1;mux3to1,,,,,,,,
+Z:/ECC/Desktop/curr/pipelined_datapath.v,1749590933,verilog,,Z:/ECC/Desktop/curr/tb.v,,pipelined_datapath,,,,,,,,
+Z:/ECC/Desktop/curr/tb.v,1749590487,verilog,,,,tb_pipelined_cpu,,,,,,,,

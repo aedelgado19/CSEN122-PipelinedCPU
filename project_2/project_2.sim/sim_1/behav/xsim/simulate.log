@@ -1,0 +1,73 @@
+Time resolution is 1 ps
+Time: 0 | PC_out=0 | IF_ID_instr=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | ID_EX_ctrl=xxxxxxxxxxxx | EX_MEM_alu_result=x | MEM_WB_data_out=z | WriteReg=x, WriteData=z
+=== WB STAGE ===
+RegWrite: x
+MemToReg: x
+PCtoReg:  x
+wb_data:  xxxxxxxx
+alu_res:  xxxxxxxx
+mem_out:  zzzzzzzz
+pc+imm:   xxxxxxxx
+READ: Rs = x1 (1), Rt = x2 (2) at time                10000
+Time: 10000 | PC_out=0 | IF_ID_instr=01000001000000010000100000000000 | ID_EX_ctrl=xxxxxxxxxxxx | EX_MEM_alu_result=x | MEM_WB_data_out=z | WriteReg=x, WriteData=z
+=== WB STAGE ===
+RegWrite: x
+MemToReg: x
+PCtoReg:  x
+wb_data:  xxxxxxxx
+alu_res:  xxxxxxxx
+mem_out:  zzzzzzzz
+pc+imm:   xxxxxxxx
+Time: 20000 | PC_out=0 | IF_ID_instr=01000001000000010000100000000000 | ID_EX_ctrl=000001000000 | EX_MEM_alu_result=x | MEM_WB_data_out=z | WriteReg=x, WriteData=z
+=== WB STAGE ===
+RegWrite: x
+MemToReg: x
+PCtoReg:  x
+wb_data:  xxxxxxxx
+alu_res:  xxxxxxxx
+mem_out:  zzzzzzzz
+pc+imm:   xxxxxxxx
+Time: 30000 | PC_out=0 | IF_ID_instr=01000001000000010000100000000000 | ID_EX_ctrl=000001000000 | EX_MEM_alu_result=3 | MEM_WB_data_out=z | WriteReg=x, WriteData=z
+=== WB STAGE ===
+RegWrite: x
+MemToReg: x
+PCtoReg:  x
+wb_data:  xxxxxxxx
+alu_res:  xxxxxxxx
+mem_out:  zzzzzzzz
+pc+imm:   xxxxxxxx
+Time: 40000 | PC_out=0 | IF_ID_instr=01000001000000010000100000000000 | ID_EX_ctrl=000001000000 | EX_MEM_alu_result=3 | MEM_WB_data_out=z | WriteReg=4, WriteData=z
+Time: 45000, PC: 0, Instruction: 01000001000000010000100000000000
+ALU Result (EX Stage): 3
+ALU Result (MEM/WB Stage): 3
+=== WB STAGE ===
+RegWrite: 1
+MemToReg: 0
+PCtoReg:  0
+wb_data:  xxxxxxxx
+alu_res:  00000003
+mem_out:  zzzzzzzz
+pc+imm:   41010800
+Time: 45000 | PC_out=1 | IF_ID_instr=01000001000000010000100000000000 | ID_EX_ctrl=000001000000 | EX_MEM_alu_result=3 | MEM_WB_data_out=z | WriteReg=4, WriteData=z
+READ: Rs = xx (x), Rt = xx (x) at time                50000
+Time: 50000 | PC_out=1 | IF_ID_instr=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | ID_EX_ctrl=000001000000 | EX_MEM_alu_result=3 | MEM_WB_data_out=z | WriteReg=4, WriteData=z
+Time: 55000, PC: 1, Instruction: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ALU Result (EX Stage): 3
+ALU Result (MEM/WB Stage): 3
+=== WB STAGE ===
+RegWrite: 1
+MemToReg: 0
+PCtoReg:  0
+wb_data:  xxxxxxxx
+alu_res:  00000003
+mem_out:  zzzzzzzz
+pc+imm:   41010800
+Time: 55000 | PC_out=2 | IF_ID_instr=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | ID_EX_ctrl=000001000000 | EX_MEM_alu_result=3 | MEM_WB_data_out=z | WriteReg=4, WriteData=z
+Time: 65000, PC: 2, Instruction: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ALU Result (EX Stage): 3
+ALU Result (MEM/WB Stage): 3
+
+--- Simulation Complete ---
+The minimum value found (x10): 0
+---------------------------
+$finish called at time : 65 ns : File "Z:/ECC/Desktop/curr/tb.v" Line 86

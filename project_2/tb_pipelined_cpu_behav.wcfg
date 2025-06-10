@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_pipelined_cpu_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_pipelined_cpu" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="48.989 ns"></ZoomEndTime>
+      <Cursor1Time time="65.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="199"></NameColumnWidth>
+      <ValueColumnWidth column_width="90"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="20" />
+   <wvobject fp_name="/tb_pipelined_cpu/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/reset" type="logic">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/reg_file/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/reg_file/wrt" type="logic">
+      <obj_property name="ElementShortName">wrt</obj_property>
+      <obj_property name="ObjectShortName">wrt</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/reg_file/rd" type="array">
+      <obj_property name="ElementShortName">rd[5:0]</obj_property>
+      <obj_property name="ObjectShortName">rd[5:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/reg_file/rs" type="array">
+      <obj_property name="ElementShortName">rs[5:0]</obj_property>
+      <obj_property name="ObjectShortName">rs[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/reg_file/rt" type="array">
+      <obj_property name="ElementShortName">rt[5:0]</obj_property>
+      <obj_property name="ObjectShortName">rt[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/reg_file/data_in" type="array">
+      <obj_property name="ElementShortName">data_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/reg_file/rs_out" type="array">
+      <obj_property name="ElementShortName">rs_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rs_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/reg_file/rt_out" type="array">
+      <obj_property name="ElementShortName">rt_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rt_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/reg_file/rf" type="array">
+      <obj_property name="ElementShortName">rf[0:63][31:0]</obj_property>
+      <obj_property name="ObjectShortName">rf[0:63][31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/ex_alu/A" type="array">
+      <obj_property name="ElementShortName">A[31:0]</obj_property>
+      <obj_property name="ObjectShortName">A[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/ex_alu/B" type="array">
+      <obj_property name="ElementShortName">B[31:0]</obj_property>
+      <obj_property name="ObjectShortName">B[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/ex_alu/aluop" type="array">
+      <obj_property name="ElementShortName">aluop[2:0]</obj_property>
+      <obj_property name="ObjectShortName">aluop[2:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/ex_alu/out" type="array">
+      <obj_property name="ElementShortName">out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/ex_alu/Z" type="logic">
+      <obj_property name="ElementShortName">Z</obj_property>
+      <obj_property name="ObjectShortName">Z</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/ex_alu/N" type="logic">
+      <obj_property name="ElementShortName">N</obj_property>
+      <obj_property name="ObjectShortName">N</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/ex_alu/negA" type="array">
+      <obj_property name="ElementShortName">negA[31:0]</obj_property>
+      <obj_property name="ObjectShortName">negA[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/ex_alu/negB" type="array">
+      <obj_property name="ElementShortName">negB[31:0]</obj_property>
+      <obj_property name="ObjectShortName">negB[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_pipelined_cpu/u_cpu/ex_alu/op" type="array">
+      <obj_property name="ElementShortName">op[2:0]</obj_property>
+      <obj_property name="ObjectShortName">op[2:0]</obj_property>
+   </wvobject>
+</wave_config>
