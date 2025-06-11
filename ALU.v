@@ -10,7 +10,7 @@ endmodule
 
 
 module ALU (
-    input [31:0] A, B,
+    input [31:0] A, B, //A is Rs, B is Rt
     input [2:0] aluop,
     output reg [31:0] out,
     output Z, N
@@ -22,8 +22,8 @@ module ALU (
     always @(*) begin
         case (aluop)
             3'b000: out = B+A;      
-            3'b110: out = negB;      
-            3'b101: out = B + negA;  
+            3'b110: out = negA;      
+            3'b101: out = A - B;  
             3'b111: out = A;  
             default: out = 32'b0;    
         endcase
