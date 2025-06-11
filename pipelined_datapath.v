@@ -140,22 +140,41 @@ module pipelined_datapath(input clk, input reset);
 	);
 	
 	//Or BrZ_mux_out, BrN_mux_out, jump control signal
-	assign or_result = BrZ_mux_out || BrN_mux_out || ctrl_out[1];
+	wire and_result;
+	and3 a3_gate(.a(BrZ_mux_out), .b(BrN_mux_out), .c(ctrl_out[1]), .y(and_result));
 	
-	wire [31:0] jump_mem_mux_out;	
-	mux2to1 #(.inputBitSize(32)) jump_mem_mux(
-	   .a(regfile_rs_val),
+	wire [31:0] m1_out;
+	
+	mux3to1 m1(
+	   .a(ifid_pc_plus1),
 	   .b(data_mem_out),
-	   .sel(ctrl_out[0]),
-	   .out(jump_mem_mux_out)
+	   .c(regfile_rs_val),
+	   .sel1(and_result),
+	   .sel2(idex_jump_mem),
+	   .out(m1_out)
 	);
 	
-	mux2to1 #(.inputBitSize(32)) pc_plus1_mux(
-	   .a(jump_mem_mux_out),
-	   .b(ifid_pc_plus1),
-	   .sel(or_result),
+	mux2to1 choose_svpc_mux(
+	   .a(m1_out),
+	   .b(exmemwb_alu_result),
+	   .sel(exmemwb_PCtoReg),
 	   .out(pc_in)
 	);
+	
+//	wire [31:0] jump_mem_mux_out;	
+//	mux2to1 #(.inputBitSize(32)) jump_mem_mux(
+//	   .a(regfile_rs_val),
+//	   .b(data_mem_out),
+//	   .sel(idex_jump_mem),
+//	   .out(jump_mem_mux_out)
+//	);
+	
+//	mux2to1 #(.inputBitSize(32)) pc_plus1_mux(
+//	   .a(ifid_pc_plus1),
+//	   .b(jump_mem_mux_out),
+//	   .sel(and_result),
+//	   .out(pc_in)
+//	);
 	
 //===================== Stage 3 (EX/MEM stage) wires and regs ====================;
 // Instantiate stage 3 modules
@@ -182,19 +201,19 @@ module pipelined_datapath(input clk, input reset);
 		.out(alu_result), .Z(Zflag), .N(Nflag)
 	);
 
-    wire [31:0] adder_pc_plus_imm;
-	pc_imm_adder branch_target_calc(
-		.pc_in(idex_pc), 
-		.imm(idex_imm), 
-		.pc_target(adder_pc_plus_imm)
-	);
+//    wire [31:0] adder_pc_plus_imm;
+//	pc_imm_adder branch_target_calc(
+//		.pc_in(idex_pc), 
+//		.imm(idex_imm), 
+//		.pc_target(adder_pc_plus_imm)
+//	);
 
     wire [31:0] data_mem_out;
     data_mem data_mem(
 		.clk(clk), 
 		.r(idex_MemRead), // MemRead
 		.w(idex_MemWrite), // MemWrite
-		.addr(alu_result), // ALU result is the address
+		.addr(idex_rs), // ALU result is the address
 		.data_in(idex_rt), // rt value is data to write for ST
 		.data_out(data_mem_out)
 	);
@@ -204,17 +223,18 @@ module pipelined_datapath(input clk, input reset);
 	wire exmemwb_MemToReg;
 	exmemwb_buf exmem_lowkey_also_wb(
 		.clk(clk),
-		.pc_in(adder_pc_plus_imm),
 		.rd_in(idex_rd),
 		.data_in(data_mem_out),
 		.alu_result_in(alu_result),
 		.MemToReg_in(idex_MemToReg),
+		.PCtoReg_in(idex_PCtoReg),
 		
-		.pc_out(exmemwb_pc_plus_imm),
+
 		.rd_out(exmemwb_rd_reg),
 		.data_out(exmemwb_data_mem_out),
 		.alu_result_out(exmemwb_alu_result),
-		.MemToReg_out(exmemwb_MemToReg)
+		.MemToReg_out(exmemwb_MemToReg),
+		.PCtoReg_out(exmemwb_PCtoReg)
 	);
 
 
