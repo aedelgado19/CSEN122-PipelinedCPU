@@ -22,9 +22,9 @@ module reg_file(clk, wrt, rd, rs, rt, data_in, rs_out, rt_out); //size 64x32
     integer i;
     initial begin
         for(i = 0; i<64; i=i+1) rf[i] = 0;
-	    rf[1] = 32'd0;    // x1 = &a[0] -> DM address 0
-        rf[2] = 32'd0;    // x2 = Start index = 0
-        rf[4] = 32'd7;    // x3 = End index = 3 (array size of 3, iterating 0, 1, 2, then 3 exits)
+	    rf[10] = 32'd0;    // x10 = &a[0] -> DM address 0
+        //rf[2] = 32'd0;    // x2 = Start index = 0
+        rf[11] = 32'd6;    // x3 = End index = 3 (array size of 3, iterating 0, 1, 2, then 3 exits)
     end
 
     assign rs_out = rf[rs];
@@ -39,27 +39,33 @@ module reg_file(clk, wrt, rd, rs, rt, data_in, rs_out, rt_out); //size 64x32
     end
 endmodule
 
+module and3(input a, input b, input c, output y);
+    assign y = a && b && c;
+endmodule
+
+
 module data_mem(clk, r, w, addr, data_in, data_out); //size 65536x32
     input clk, r, w;
     input [31:0] addr, data_in;
     output reg [31:0] data_out;
 
-    reg [31:0] mem [0:65535];
+    reg [31:0] d_mem [0:65535];
     wire [15:0] a = addr[15:0]; //made inst_mem word addressed so use 16 bits here
 
     initial begin
-        mem[16'd2] = 32'd31;    // a[2]
-        mem[16'd3] = 1024;
-        mem[16'd4] = 32'd9;
-        mem[16'd5] = -2048;
-        mem[16'd6] = 32'd10;
+        d_mem[16'd2] = 32'd31;    // a[2]
+        d_mem[16'd3] = 1024;
+        d_mem[16'd4] = 32'd9;
+        d_mem[16'd5] = -32'd2048;
+        d_mem[16'd6] = 32'd10;
     end
 
     always @(posedge clk) begin
         if (w) begin
-		  mem[a] <= data_in;
+		  d_mem[a] <= data_in;
         end
-            else if (r) begin data_out <= mem[a];
+        else if (r) begin
+            data_out <= d_mem[a];
         end
     end
 endmodule
