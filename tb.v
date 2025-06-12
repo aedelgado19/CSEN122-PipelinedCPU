@@ -41,67 +41,56 @@ module tb_pipelined_cpu;
         //u_cpu.inst_mem.mem[8'h01] = 32'b1001_111111_000010_111111_1111111111; // BRZ x2
         //u_cpu.inst_mem.mem[8'h01] = 32'b1011_111111_000010_111111_1111111111; // BRN x2
         //u_cpu.inst_mem.mem[8'h00] = 32'b1111_000100_0000000000000000000010; // SVPC x4, 2 (PC+2 = 3)
+        
 
-        u_cpu.inst_mem.mem[8'h00] = 32'b1110_001010_01010_0000000000000000; // LD x5, x10
-        u_cpu.inst_mem.mem[8'h01] = 32'b1111_001100_0000000000000000000010; // SVPC x6, 2
-        u_cpu.inst_mem.mem[8'h02] = 32'b1111_001110_0000000000000000000111; // SVPC x7, 7
-        u_cpu.inst_mem.mem[8'h03] = 32'b0101_01011_01011_1111111111111111; // INC x11, x11, -1
-        u_cpu.inst_mem.mem[8'h04] = 32'b0101_01010_01010_0000000000000001; // INC x10, x10, 1
-        u_cpu.inst_mem.mem[8'h05] = 32'b0000_000000_000000_0000000000000000; // NOP
-        u_cpu.inst_mem.mem[8'h06] = 32'b0000_000000_000000_0000000000000000; // NOP
-        u_cpu.inst_mem.mem[8'h07] = 32'b1110_11100_01010_0000000000000000; // LD x28, x10
-        u_cpu.inst_mem.mem[8'h08] = 32'b0000_000000_000000_0000000000000000; // NOP
-        u_cpu.inst_mem.mem[8'h09] = 32'b0000_000000_000000_0000000000000000; // NOP
-        u_cpu.inst_mem.mem[8'h0A] = 32'b0111_11101_00101_11100_0000000000; // SUB x29, x5, x28
-        u_cpu.inst_mem.mem[8'h0B] = 32'b1011_000000_00111_0000000000000000; // BRN x7
-        u_cpu.inst_mem.mem[8'h0C] = 32'b0111_00000_00000_00000_0000000000; // SUB x0, x0, x0 (NOP form)
-        u_cpu.inst_mem.mem[8'h0D] = 32'b0100_00101_00000_11100_0000000000; // ADD x5, x0, x28
-        u_cpu.inst_mem.mem[8'h0E] = 32'b0111_11110_00000_01011_0000000000; // SUB x30, x0, x11
-        u_cpu.inst_mem.mem[8'h0F] = 32'b1011_000000_00110_0000000000000000; // BRN x6
-        u_cpu.inst_mem.mem[8'h10] = 32'b0100_01010_00000_00101_0000000000; // ADD x10, x0, x5
-        u_cpu.inst_mem.mem[8'h11] = 32'b1000_000000_00001_0000000000000000; // J x1
-        
-        
-        /*u_cpu.inst_mem.mem[8'h00] = 32'b1111_001101_000000_000000_0000011110; // SVPC x13, 29 (PC+27 = 0x1B = done)
-        u_cpu.inst_mem.mem[8'h01] = 32'b1111_001110_000000_000000_0000010110; // SVPC x14, 22 (PC+22 = 0x17 = no_change)
-        u_cpu.inst_mem.mem[8'h02] = 32'b1111_001111_000000_000000_0000000110; // SVPC x15, 6 (PC+6 = 0x08 = loop)
-        u_cpu.inst_mem.mem[8'h03] = 32'b0100_000100_000001_000010_1111111111; // ADD x4, x1, x2
-        u_cpu.inst_mem.mem[8'h04] = 32'b00000000000000000000000000000000; // NOP
-        u_cpu.inst_mem.mem[8'h05] = 32'b1110_001010_111111_000100_1111111111; // LD x10, x4
-        u_cpu.inst_mem.mem[8'h06] = 32'b00000000000000000000000000000000; // NOP
-        u_cpu.inst_mem.mem[8'h07] = 32'b0101_000010_000010_000000_0000000001; // INC x2, x2, 1
-        u_cpu.inst_mem.mem[8'h08] = 32'b00000000000000000000000000000000; // NOP (loop:)
-        u_cpu.inst_mem.mem[8'h09] = 32'b0111_000111_000011__000010_1111111111; // SUB x7, x3, x2
-        u_cpu.inst_mem.mem[8'h0A] = 32'b1011_000000_001101_000000_0000000000; // BRN x13
-        u_cpu.inst_mem.mem[8'h0B] = 32'b00000000000000000000000000000000; // NOP (delay slot)
-        u_cpu.inst_mem.mem[8'h0C] = 32'b00000000000000000000000000000000; // NOP (delay slot)
-        u_cpu.inst_mem.mem[8'h0D] = 32'b0100_000100_000001_000010_1111111111; // ADD x4, x1, x2
-        u_cpu.inst_mem.mem[8'h0E] = 32'b00000000000000000000000000000000; // NOP
-        u_cpu.inst_mem.mem[8'h0F] = 32'b1110_000101_000100_111111_1111111111; // LD x5, x4
-        u_cpu.inst_mem.mem[8'h10] = 32'b00000000000000000000000000000000; // NOP
-        u_cpu.inst_mem.mem[8'h11] = 32'b0111_000111_001010_000101_1111111111; // SUB x7, x10, x5
-        u_cpu.inst_mem.mem[8'h12] = 32'b1011_000000_001110_111111_1111111111; // BRN x14
-        u_cpu.inst_mem.mem[8'h13] = 32'b00000000000000000000000000000000; // NOP (delay slot)
-        u_cpu.inst_mem.mem[8'h14] = 32'b00000000000000000000000000000000; // NOP (delay slot)
-        u_cpu.inst_mem.mem[8'h15] = 32'b0111_000000_000001_000001_1111111111; // SUB x0, x1, x1
-        u_cpu.inst_mem.mem[8'h16] = 32'b0100_001010_000101_000000_1111111111; // ADD x10, x5, x0
-        u_cpu.inst_mem.mem[8'h17] = 32'b0101_000010_000010_000001_1111111111; // INC x2, x2, 1 (no_change:)
-        u_cpu.inst_mem.mem[8'h18] = 32'b1000_000000_001111_111111_1111111111; // J x15
-        u_cpu.inst_mem.mem[8'h19] = 32'b00000000000000000000000000000000; // NOP (delay slot)
-        u_cpu.inst_mem.mem[8'h1A] = 32'b00000000000000000000000000000000; // NOP (delay slot)
-        u_cpu.inst_mem.mem[8'h1B] = 32'b00000000000000000000000000000000; // NOP (delay slot)
-        u_cpu.inst_mem.mem[8'h1C] = 32'b00000000000000000000000000000000; // NOP (delay slot)*/
+        u_cpu.inst_mem.mem[0] = 32'b1111_001101_000000_000000_0000010001; // SVPC x13, 17 (PC+27 = 0x1B = done)
+        u_cpu.inst_mem.mem[1] = 32'b1111_001110_000000_000000_0000001110; // SVPC x14, 14    (PC+22 = 0x17 = no_change)
+        u_cpu.inst_mem.mem[2] = 32'b1111_001111_000000_000000_0000000101; // SVPC x15, 5 (PC+6 = 0x08 = loop)
+        u_cpu.inst_mem.mem[3] = 32'b0100_000100_000001_000010_1111111111; // ADD x4, x1, x2
+        u_cpu.inst_mem.mem[4] = 32'b00000000000000000000000000000000; //NOP
+
+        u_cpu.inst_mem.mem[5] = 32'b1110_001010_000001_111111_1111111111; // LD x10, x4
+//        u_cpu.inst_mem.mem[6] = 32'b00000000000000000000000000000000; //NOP
+
+        u_cpu.inst_mem.mem[6] = 32'b0101_000010_000010_000000_0000000001; // INC x2, x2, 1
+        u_cpu.inst_mem.mem[7] = 32'b0111_000111_000011__000010_1111111111; // SUB x7, x3, x2, (loop)
+        u_cpu.inst_mem.mem[8] = 32'b1011_000000_001101_000000_0000000000; // BRN x13
+        u_cpu.inst_mem.mem[9] = 32'b0100_000100_000001_000010_1111111111; // ADD x4, x1, x2
+        u_cpu.inst_mem.mem[10] = 32'b1110_000101_000100_111111_1111111111; // LD x5, x4
+        u_cpu.inst_mem.mem[11] = 32'b0111_000111_001010_000101_1111111111; // SUB x7, x10, x5
+        u_cpu.inst_mem.mem[12] = 32'b1011_000000_001110_111111_1111111111; // BRN x14
+        u_cpu.inst_mem.mem[13] = 32'b0111_000000_000001_000001_1111111111; // SUB x0, x1, x1
+        u_cpu.inst_mem.mem[14] = 32'b0100_001010_000101_000000_1111111111; // ADD x10, x5, x0
+        u_cpu.inst_mem.mem[15] = 32'b0101_000010_000010_000001_1111111111; // INC x2, x2, 1 (no_change:)
+        u_cpu.inst_mem.mem[16] = 32'b1000_000000_001111_111111_1111111111; // J x15
+        u_cpu.inst_mem.mem[17] = 32'b00000000000000000000000000000000; //NOP  (end)
+
+//        u_cpu.inst_mem.mem[1] = 32'b00000000000000000000000000000000; //NOPS
+
 
 
         // Run simulation for a sufficient number of clock cycles
         #20; // Allow reset to propagate and PC to initialize to 0
             @(posedge clk);
-		repeat (50) begin
+		repeat (60) begin
 		    @(posedge clk);
 //		    $display("Time: %0t, PC: %0d, Instruction: %b", $time, u_cpu.pc_out, u_cpu.inst_out);
 //		    $display("ALU Result (EX Stage): %0d", u_cpu.exmem_alu_result);
 //		    $display("ALU Result (MEM/WB Stage): %0d", u_cpu.memwb_alu_result);
 		end
+
+           // --- Display d_mem content after simulation ---
+        $display("\n--- Contents of Data Memory (d_mem) ---");
+        // Loop through the first few relevant locations, or a specific range.
+        // Adjust the loop bounds (0 to 10 here) based on which memory locations you expect to be used.
+        for (integer i = 0; i < 10; i=i+1) begin
+            // You need to know the instance name of data_mem inside pipelined_datapath.
+            // Let's assume it's instantiated as 'u_data_mem' within 'pipelined_datapath'.
+            // So the path would be u_cpu.u_data_mem.d_mem[i]
+            // If you don't know the instance name, you'll need to check your pipelined_datapath module.
+            $display("d_mem[%0d] = %0d (0x%0h)", i, u_cpu.data_mem.d_mem[i], u_cpu.data_mem.d_mem[i]);
+        end
+        $display("---------------------------------------");
 
         // Display the minimum value stored in register x10
         $display("\n--- Simulation Complete ---");
