@@ -22,9 +22,9 @@ module reg_file(clk, wrt, rd, rs, rt, data_in, rs_out, rt_out); //size 64x32
     integer i;
     initial begin
         for(i = 0; i<64; i=i+1) rf[i] = 0;
-	    rf[1] = 32'd0;    // x10 = &a[0] -> DM address 100
-        rf[2] = 32'd0;    // x2 = Start index = 0
-        rf[3] = 32'd7;    // x3 = End index = 3 (array size of 3, iterating 0, 1, 2, then 3 exits)
+	    rf[1] = 32'd2;    // x10 = &a[0] -> DM address 100
+        rf[2] = 32'd2;    // x2 = Start index = 0
+        rf[3] = 32'd5;    // x3 = End index = 3 (array size of 3, iterating 0, 1, 2, then 3 exits)
     end
 
     assign rs_out = rf[rs];
@@ -55,8 +55,6 @@ module data_mem(clk, r, w, addr, data_in, data_out); //size 65536x32
     integer i;
     initial begin
         for(i = 0; i<65535; i=i+1) d_mem[i] = 0;
-        d_mem[16'd0] = 32'd55;    // a[2]
-
         d_mem[16'd2] = 32'd31;    // a[2]
         d_mem[16'd3] = 32'd1024;
         d_mem[16'd4] = 32'd9;
