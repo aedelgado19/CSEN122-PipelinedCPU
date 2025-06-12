@@ -43,27 +43,32 @@ module tb_pipelined_cpu;
         //u_cpu.inst_mem.mem[8'h00] = 32'b1111_000100_0000000000000000000010; // SVPC x4, 2 (PC+2 = 3)
         
 
-        u_cpu.inst_mem.mem[0] = 32'b1111_001101_000000_000000_0000010001; // SVPC x13, 17 (PC+27 = 0x1B = done)
-        u_cpu.inst_mem.mem[1] = 32'b1111_001110_000000_000000_0000001110; // SVPC x14, 14    (PC+22 = 0x17 = no_change)
-        u_cpu.inst_mem.mem[2] = 32'b1111_001111_000000_000000_0000000101; // SVPC x15, 5 (PC+6 = 0x08 = loop)
+        u_cpu.inst_mem.mem[0] = 32'b1111_001101_000000_000000_0000001011; // SVPC x13, end = PC+23 = 23
+        u_cpu.inst_mem.mem[1] = 32'b1111_001110_000000_000000_0000010100; // SVPC x14, no_change = PC+20 = 21
+        u_cpu.inst_mem.mem[2] = 32'b1111_001111_000000_000000_0000001000; // SVPC x15, loop = PC+8 = 10
         u_cpu.inst_mem.mem[3] = 32'b0100_000100_000001_000010_1111111111; // ADD x4, x1, x2
         u_cpu.inst_mem.mem[4] = 32'b00000000000000000000000000000000; //NOP
-
-        u_cpu.inst_mem.mem[5] = 32'b1110_001010_000001_111111_1111111111; // LD x10, x4
-//        u_cpu.inst_mem.mem[6] = 32'b00000000000000000000000000000000; //NOP
-
-        u_cpu.inst_mem.mem[6] = 32'b0101_000010_000010_000000_0000000001; // INC x2, x2, 1
-        u_cpu.inst_mem.mem[7] = 32'b0111_000111_000011__000010_1111111111; // SUB x7, x3, x2, (loop)
-        u_cpu.inst_mem.mem[8] = 32'b1011_000000_001101_000000_0000000000; // BRN x13
-        u_cpu.inst_mem.mem[9] = 32'b0100_000100_000001_000010_1111111111; // ADD x4, x1, x2
-        u_cpu.inst_mem.mem[10] = 32'b1110_000101_000100_111111_1111111111; // LD x5, x4
-        u_cpu.inst_mem.mem[11] = 32'b0111_000111_001010_000101_1111111111; // SUB x7, x10, x5
-        u_cpu.inst_mem.mem[12] = 32'b1011_000000_001110_111111_1111111111; // BRN x14
-        u_cpu.inst_mem.mem[13] = 32'b0111_000000_000001_000001_1111111111; // SUB x0, x1, x1
-        u_cpu.inst_mem.mem[14] = 32'b0100_001010_000101_000000_1111111111; // ADD x10, x5, x0
-        u_cpu.inst_mem.mem[15] = 32'b0101_000010_000010_000001_1111111111; // INC x2, x2, 1 (no_change:)
-        u_cpu.inst_mem.mem[16] = 32'b1000_000000_001111_111111_1111111111; // J x15
-        u_cpu.inst_mem.mem[17] = 32'b00000000000000000000000000000000; //NOP  (end)
+        u_cpu.inst_mem.mem[5] = 32'b00000000000000000000000000000000; //NOP
+        u_cpu.inst_mem.mem[6] = 32'b1110_001010_000001_111111_1111111111; // LD x10, x4
+        u_cpu.inst_mem.mem[7] = 32'b00000000000000000000000000000000; //NOP
+        u_cpu.inst_mem.mem[8] = 32'b0101_000010_000010_000000_0000000001; // INC x2, x2, 1
+        u_cpu.inst_mem.mem[9] = 32'b00000000000000000000000000000000; //NOP
+        
+        u_cpu.inst_mem.mem[10] = 32'b0111_001000_000011__000010_1111111111; // SUB x7, x3, x2, (loop)
+        u_cpu.inst_mem.mem[11] = 32'b1011_000000_001101_000000_0000000000; // BRN x13
+        u_cpu.inst_mem.mem[12] = 32'b0100_000100_000001_000010_1111111111; // ADD x4, x1, x2
+        u_cpu.inst_mem.mem[13] = 32'b00000000000000000000000000000000; //NOP
+        u_cpu.inst_mem.mem[14] = 32'b00000000000000000000000000000000; //NOP
+        u_cpu.inst_mem.mem[15] = 32'b1110_000101_000100_111111_1111111111; // LD x5, x4
+        u_cpu.inst_mem.mem[16] = 32'b00000000000000000000000000000000; //NOP
+        u_cpu.inst_mem.mem[17] = 32'b0111_000111_001010_001001_1111111111; // SUB x7, x10, x5
+        u_cpu.inst_mem.mem[18] = 32'b1011_000000_001110_111111_1111111111; // BRN x14
+        u_cpu.inst_mem.mem[19] = 32'b0111_000000_000001_000001_1111111111; // SUB x0, x1, x1
+        u_cpu.inst_mem.mem[20] = 32'b0100_001010_000101_000000_1111111111; // ADD x10, x5, x0
+        
+        u_cpu.inst_mem.mem[21] = 32'b0101_000010_000010_000001_1111111111; // INC x2, x2, 1 (no_change:)
+        u_cpu.inst_mem.mem[22] = 32'b1000_000000_001111_111111_1111111111; // J x15
+//        u_cpu.inst_mem.mem[13] = 32'b00000000000000000000000000000000; //NOP  (end)
 
 //        u_cpu.inst_mem.mem[1] = 32'b00000000000000000000000000000000; //NOPS
 
@@ -72,7 +77,7 @@ module tb_pipelined_cpu;
         // Run simulation for a sufficient number of clock cycles
         #20; // Allow reset to propagate and PC to initialize to 0
             @(posedge clk);
-		repeat (60) begin
+		repeat (300) begin
 		    @(posedge clk);
 //		    $display("Time: %0t, PC: %0d, Instruction: %b", $time, u_cpu.pc_out, u_cpu.inst_out);
 //		    $display("ALU Result (EX Stage): %0d", u_cpu.exmem_alu_result);
