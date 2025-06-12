@@ -72,12 +72,14 @@ module exmemwb_buf(
     input [5:0] rd_in,
     input [31:0] data_in,
     input [31:0] alu_result_in,
+    input RegWrite_in,
     input MemToReg_in,
     input PCtoReg_in,
     
     output reg [5:0] rd_out,
     output reg [31:0] data_out,
     output reg [31:0] alu_result_out,
+    output reg RegWrite_out,
     output reg MemToReg_out,
     output reg PCtoReg_out
 );
@@ -85,6 +87,7 @@ always @(posedge clk) begin
         rd_out <= rd_in;
         data_out <= data_in;
         alu_result_out <= alu_result_in;
+        RegWrite_out <= RegWrite_in;
         MemToReg_out <= MemToReg_in;
         PCtoReg_out <= PCtoReg_in;
     end
