@@ -30,20 +30,38 @@ module tb_pipelined_cpu;
 
         // Load instructions into instruction memory of the CPU
         // Accessing internal 'mem' of inst_mem module inside pipelined_datapath
-	//INDIVIDUAL INSTRUCTIONS ARE ALL WORKING
-//	  u_cpu.inst_mem.mem[8'h00] = 32'b0100_000100_000001_000010_0000000000; // ADD x4, x1, x2
-//        u_cpu.inst_mem.mem[8'h00] = 32'b0111_000011_000001_000010_0000000000; // SUB x3, x1, x2
-//	  u_cpu.inst_mem.mem[8'h00] = 32'b0110_000100_000001_111111_0000000000; // NEG x4, x1
-//	  u_cpu.inst_mem.mem[8'h00] = 32'b0101_000100_000001_0000000000000001; // INC x4, x1, y
-//        u_cpu.inst_mem.mem[8'h00] = 32'b1110_000100_000001_111111_0000000000; // LD x4, mem[x1]
-//        u_cpu.inst_mem.mem[8'h00] = 32'b0011_111111_000001_000010_1111111111; // ST x2, x1 (ST rt, rs)
-//        u_cpu.inst_mem.mem[8'h00] = 32'b1000_111111_000001_111111_1111111111; // J x1
-//        u_cpu.inst_mem.mem[8'h00] = 32'b1010_111111_000001_111111_1111111111; // JM x1
-//        u_cpu.inst_mem.mem[8'h01] = 32'b1001_111111_000011_111111_1111111111; // BRZ x3
-//        u_cpu.inst_mem.mem[8'h01] = 32'b1011_111111_000010_111111_1111111111; // BRN x2
-//        u_cpu.inst_mem.mem[8'h00] = 32'b1111_000100_0000000000000000000010; // SVPC x4, 2 (PC+2 = 2)
+        u_cpu.inst_mem.mem[0] = 32'b1111_000100_0000000000000000000010; // SVPC x4, 2 (PC+2 = 17)
+
+        u_cpu.inst_mem.mem[1] = 32'b0100_001001_000001_000010_0000000000; // ADD x9, x1, x2
+        u_cpu.inst_mem.mem[2] = 32'b0111_001010_000001_000010_0000000000; // SUB x10, x1, x2
+        u_cpu.inst_mem.mem[3] = 32'b0110_001011_000001_111111_0000000000; // NEG x11, x1
+        u_cpu.inst_mem.mem[4] = 32'b0101_000100_000001_0000000000000001; // INC x4, x1, y
         
+        u_cpu.inst_mem.mem[5] = 32'b1110_000101_000001_111111_0000000000; // LD x4, mem[x1]
+        u_cpu.inst_mem.mem[6] = 32'b0011_111111_000001_000010_1111111111; // ST x2, x1 (ST rt, rs)
         
+        u_cpu.inst_mem.mem[7] = 32'b0111_001000_000011_000011_1111111111; // SUB x0, x3, x3
+        u_cpu.inst_mem.mem[8] = 32'b1001_111111_001000_111111_1111111111; // BRZ x8
+        u_cpu.inst_mem.mem[9] = 32'b00000000000000000000000000000000; //NOP
+        
+        u_cpu.inst_mem.mem[10] = 32'b1000_111111_000011_111111_1111111111; // J x3
+        u_cpu.inst_mem.mem[11] = 32'b00000000000000000000000000000000; //NOP
+
+        u_cpu.inst_mem.mem[12] = 32'b0111_001010_000001_000010_1111111111; // SUB x3, x1, x2
+        u_cpu.inst_mem.mem[13] = 32'b1011_111111_000110_111111_1111111111; // BRN x6
+        u_cpu.inst_mem.mem[14] = 32'b00000000000000000000000000000000; //NOP
+
+        u_cpu.inst_mem.mem[15] = 32'b1010_111111_000111_111111_1111111111; // JM x7
+        
+        u_cpu.inst_mem.mem[16] = 32'b0100_001001_000001_000010_0000000000; // ADD x9, x1, x2
+        u_cpu.inst_mem.mem[17] = 32'b0111_001010_000001_000010_0000000000; // SUB x10, x1, x2
+
+        
+//        u_cpu.inst_mem.mem[0] = 32'b1110_001010_000011_111111_1111111111; // LD x10, x3
+//        u_cpu.inst_mem.mem[1] = 32'b00000000000000000000000000000000; //NOP
+//        u_cpu.inst_mem.mem[2] = 32'b00000000000000000000000000000000; //NOP
+//        u_cpu.inst_mem.mem[3] = 32'b0111_001000_000010__001010_1111111111; // SUB x8, x2, x10, (loop)
+         
          /*
          MIN NOT WORKING WITH OUR PIPELINE YET
         u_cpu.inst_mem.mem[0] = 32'b1111_001101_000000_000000_0000011010; // SVPC x13, end = PC+26 = 26
@@ -82,7 +100,7 @@ module tb_pipelined_cpu;
         // Run simulation for a sufficient number of clock cycles
         #20; // Allow reset to propagate and PC to initialize to 0
           
-		repeat (10) begin
+		repeat (50) begin
 		    @(posedge clk);
 		end
 
