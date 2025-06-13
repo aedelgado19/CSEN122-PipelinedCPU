@@ -22,11 +22,14 @@ module reg_file(clk, wrt, rd, rs, rt, data_in, rs_out, rt_out); //size 64x32
     integer i;
     initial begin
         for(i = 0; i<64; i=i+1) rf[i] = 0;
-	    rf[1] = 32'd2;    // x10 = &a[0] -> DM address 100
-        rf[2] = 32'd6;    // x2 = Start index = 0
-        rf[3] = 32'd7;    // x3 = End index = 3 (array size of 3, iterating 0, 1, 2, then 3 exits)
-        rf[4] = 32'd17;    // x3 = End index = 3 (array size of 3, iterating 0, 1, 2, then 3 exits)
-        rf[5] = 32'd9;    // x3 = End index = 3 (array size of 3, iterating 0, 1, 2, then 3 exits)
+	    rf[1] = 32'd2;     //x1 = 2
+        rf[2] = 32'd6;     //x2 = 6
+        rf[3] = 32'd11;    //x3 = 11
+        rf[4] = 32'd17;    //x4 = 17
+        rf[5] = 32'd9;     //x5 = 9
+        rf[6] = 32'd13;    //x6 = 13
+        rf[7] = 32'd7;     //x7 = 7
+        rf[8] = 32'd9;     //x8 = 9
     end
 
     assign rs_out = rf[rs];
@@ -34,7 +37,7 @@ module reg_file(clk, wrt, rd, rs, rt, data_in, rs_out, rt_out); //size 64x32
     	
     always@(rs, rt) $display("READ: Rs = x%0d (%0d), Rt = x%0d (%0d) at time %t", rs, $signed(rs_out), rt, $signed(rt_out), $time);
     // Synchronous write: Register file content is updated on positive clock edge if write enable is high
-    always @(posedge clk) begin
+    always @(posedge clk) begin   
         if (wrt==1) begin
             rf[rd] <= data_in;
         end
@@ -57,11 +60,12 @@ module data_mem(clk, r, w, addr, data_in, data_out); //size 65536x32
     integer i;
     initial begin
         for(i = 0; i<65535; i=i+1) d_mem[i] = 0;
-        d_mem[16'd2] = 32'd31;    // a[2]
-        d_mem[16'd3] = 32'd1024;
-        d_mem[16'd4] = 32'd9;
-        d_mem[16'd5] = 32'd2040;
-        d_mem[16'd6] = 32'd10;
+        d_mem[16'd2] = 32'd15;      // d_mem[2] = 15
+        d_mem[16'd3] = 32'd1024;    // d_mem[3] = 1026
+        d_mem[16'd4] = 32'd9;       // d_mem[4] = 9
+        d_mem[16'd5] = -32'd2040;   // d_mem[5] = -2040
+        d_mem[16'd6] = 32'd10;      // d_mem[6] = 10
+        d_mem[16'd7] = 32'd17;      // d_mem[7] = 17
         
     end
 
